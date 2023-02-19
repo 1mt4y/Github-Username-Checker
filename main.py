@@ -8,7 +8,7 @@ def checkUsername(username):
     else:
         print(f"[!] Username Unavailable: {username}")
 
-with concurrent.futures.ThreadPoolExecutor() as executor:
+with concurrent.futures.ThreadPoolExecutor() as executor: # Create the thread pool
     with open("usernames.txt") as h:
         for username in h.read().strip().split('\n'):
-            executor.submit(checkUsername, username=username)
+            executor.submit(checkUsername, username=username) # Schedule the execution of the checkUsername function
