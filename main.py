@@ -1,7 +1,14 @@
 import requests
-with open("usernames.txt") as f:
-    for username in f.read().split('\n'):
-        url = f"https://github.com/{username}"
-        res = requests.get(url)
-        if res.status_code == 404:
-            print(f'USERNAME AVAILABLE: {username}')
+import concurrent.futures
+
+def checkUsername(username):
+    res = requests.get(f"https://github.com/{username}")
+    if res.status_code == 404:
+        print(f"[*] USERNAME AVAILABLE: {username}")
+    else:
+        print(f"[!] Username Unavailable: {username}")
+
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    with open("usernames.txt") as h:
+        for username in h.read().strip().split('\n'):
+            executor.submit(checkUsername, username=username)
